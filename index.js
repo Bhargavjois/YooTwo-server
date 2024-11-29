@@ -42,9 +42,12 @@ io.on("connection", (socket) => {
 		if (roomInfo) {
 			const usersInRoom = Array.from(roomInfo);
 			if (usersInRoom.length >= 2) {
-				io.to(socket.id).emit("error:full", { error: "Can't join the room.", message: `Sorry! Room '${meetid}' is already full.` });
+				io.to(socket.id).emit("error:meet", { error: "Can't join the room.", message: `Sorry! Room '${meetid}' is already full.` });
 				return;
 			}
+		} else if (!roomInfo && !data.newmeet) {
+			io.to(socket.id).emit("error:meet", { error: "Can't join the room.", message: `Sorry! Room '${meetid}' closed / does not exist.` });
+			return;
 		}
 
 		// Associate socket ID with username and meet ID.
