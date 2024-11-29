@@ -1,7 +1,20 @@
+import express from 'express';
 import { Server } from 'socket.io';
+import http from 'http';
+
+// Create an Express app
+const app = express();
+
+// Create an HTTP server and attach Socket.IO
+const server = http.createServer(app);
+
+// Add a GET route to show a message
+app.get('/', (req, res) => {
+  res.send('WebRTC Signaling Server is Running');
+});
 
 // Start a new server at port 3000 and enable to be accessble by any site using cors true.
-const io = new Server(3000, {
+const io = new Server(server, {
 	cors: true,
 });
 
@@ -90,4 +103,9 @@ io.on("connection", (socket) => {
 
 		io.to(room).emit("user:left", {id: socket.id, username});
 	});
+});
+
+// Start the server on port 3000
+server.listen(3000, () => {
+  console.log('Server is running on port: 3000');
 });
