@@ -1,11 +1,5 @@
 import { Server } from 'socket.io';
 
-const express = require('express');
-const http = require('http');
-
-const app = express();
-const server = http.createServer(app);
-
 // Start a new server at port 3000 and enable to be accessble by any site using cors true.
 const io = new Server(3000, {
 	cors: true,
@@ -97,12 +91,3 @@ io.on("connection", (socket) => {
 		io.to(room).emit("user:left", {id: socket.id, username});
 	});
 });
-
-app.get('/', (req, res) => {
-  res.send('WebRTC Signaling Server is Running!');
-});
-
-// Export the server to be used by Vercel
-module.exports = (req, res) => {
-  server(req, res);
-};
