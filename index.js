@@ -15,7 +15,13 @@ app.get('/', (req, res) => {
 
 // Start a new server at port 3000 and enable to be accessble by any site using cors true.
 const io = new Server(server, {
-	cors: true,
+	cors: {
+		origin: "*",
+		methods: ["GET", "POST"],
+		credentials: true,
+		transports: ['websocket', 'polling'],
+	},
+	allowEIO3: true
 });
 
 // Maps to store data associated with usernames and rooms.
